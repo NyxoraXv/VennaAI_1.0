@@ -52,144 +52,136 @@
     </div>
     
     <script>
-document.addEventListener("DOMContentLoaded", function() {
-    const images = document.querySelectorAll("img");
-    let imagesLoaded = 0;
-
-    images.forEach((img) => {
-        if (img.complete) {
-            imagesLoaded++;
-        } else {
-            img.addEventListener("load", () => {
-                imagesLoaded++;
-                if (imagesLoaded === images.length) {
-                    hideLoadingOverlay();
-                }
-            });
-            img.addEventListener("error", () => {
-                imagesLoaded++; // Increment even if there was an error
-                if (imagesLoaded === images.length) {
-                    hideLoadingOverlay();
-                }
-            });
-        }
-    });
-
-    if (imagesLoaded === images.length) {
-        hideLoadingOverlay();
-    }
-});
-
-function hideLoadingOverlay() {
-    const overlay = document.getElementById("loading-overlay");
-    if (overlay) {
-        overlay.style.display = "none";
-    }
-}
-
-
-$(document).ready(function() {
-    // Retrieve conversation history from cookies
-    const conversationHistory = JSON.parse(getCookie('conversation_history') || '[]');
-
-    // Display conversation history in the chat response
-    conversationHistory.forEach((message) => {
-        appendMessageToChat(message.role, message.content);
-    });
-
-    $('.send-button').on('click', sendMessage);
-    $('#message-textbox').on('keydown', function(event) {
-        if (event.key === 'Enter') {
-            event.preventDefault();
-            sendMessage();
-        }
-    });
-
-    function sendMessage() {
-        const message = $('#message-textbox').val().trim();
-        if (message === '') return;
-
-        const timestamp = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        document.addEventListener("DOMContentLoaded", function() {
+            const images = document.querySelectorAll("img");
+            let imagesLoaded = 0;
         
-        appendMessageToChat("user", message, timestamp);
-
-        // Show loading GIF in the bot's message container
-        appendLoadingMessage(timestamp);
-
-        // Make AJAX request to server
-        $.ajax({
-            type: 'POST',
-            url: '/chat/',
-            contentType: 'application/json',
-            data: JSON.stringify({ message: message }),
-            beforeSend: function(xhr) {
-                xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
-            },
-            success: function(response) {
-                removeLoadingMessage();
-
-                // Append the assistant's message
-                appendMessageToChat("assistant", response.response, timestamp);
-
-                // Update conversation history in cookies
-                conversationHistory.push({ role: "user", content: message });
-                conversationHistory.push({ role: "assistant", content: response.response });
-                document.cookie = `conversation_history=${JSON.stringify(conversationHistory)}; path=/; max-age=3600`;
-            },
-            error: function(xhr, status, error) {
-                console.error('Error: ', error);
-                removeLoadingMessage();
+            images.forEach((img) => {
+                if (img.complete) {
+                    imagesLoaded++;
+                } else {
+                    img.addEventListener("load", () => {
+                        imagesLoaded++;
+                        if (imagesLoaded === images.length) {
+                            hideLoadingOverlay();
+                        }
+                    });
+                    img.addEventListener("error", () => {
+                        imagesLoaded++; // Increment even if there was an error
+                        if (imagesLoaded === images.length) {
+                            hideLoadingOverlay();
+                        }
+                    });
+                }
+            });
+        
+            if (imagesLoaded === images.length) {
+                hideLoadingOverlay();
             }
         });
-    }
-
-    function appendMessageToChat(role, content, timestamp = '') {
-        const avatar = role === "user" ? "user-avatar.png" : "bot-avatar.png";
-        $('#chat-response').append(`
-            <div class="message-container ${role}">
-                <img src="{% static 'img/${avatar}' %}" alt="${role} Avatar" class="avatar">
-                <div class="message-bubble">
-                    <p>${content}</p>
-                    <span class="timestamp">${timestamp}</span>
-                </div>
-            </div>
-        `);
-        $('#chat-response').animate({ scrollTop: $('#chat-response')[0].scrollHeight }, 500);
-    }
-
-    function appendLoadingMessage(timestamp) {
-        const loadingMessage = `
-            <div class="message-container bot loading">
-                <img src="{% static 'img/bot-avatar.png' %}" alt="Bot Avatar" class="avatar">
-                <div class="message-bubble">
-                    <img src="{% static 'img/loading.gif' %}" alt="Loading..." class="loading-gif"/>
-                    <span class="timestamp">${timestamp}</span>
-                </div>
-            </div>
-        `;
-        $('#chat-response').append(loadingMessage);
-        $('#chat-response').animate({ scrollTop: $('#chat-response')[0].scrollHeight }, 500);
-    }
-
-    function removeLoadingMessage() {
-        $('#chat-response .loading').last().remove();
-    }
-
-    function getCookie(name) {
-        let cookieValue = null;
-        if (document.cookie && document.cookie !== '') {
-            const cookies = document.cookie.split(';');
-            for (let i = 0; i < cookies.length; i++) {
-                const cookie = cookies[i].trim();
-                if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                    break;
-                }
+        
+        function hideLoadingOverlay() {
+            const overlay = document.getElementById("loading-overlay");
+            if (overlay) {
+                overlay.style.display = "none";
             }
         }
-        return cookieValue;
-    }
-});
-
-    </script>
+        
+        $(document).ready(function(){
+            $('.send-button').on('click', sendMessage);
+        
+            $('#message-textbox').on('keydown', function(event) {
+                if (event.key === 'Enter') {
+                    event.preventDefault(); 
+                    sendMessage();
+                }
+            });
+        
+            function sendMessage() {
+                const message = $('#message-textbox').val().trim();
+                if (message === '') return;
+        
+                const now = new Date();
+                const hours = now.getHours().toString().padStart(2, '0');
+                const minutes = now.getMinutes().toString().padStart(2, '0');
+                const timestamp = `${hours}:${minutes}`;
+        
+                $('#chat-response').append(`
+                    <div class="message-container user">
+                        <div class="message-bubble">
+                            <p>${message}</p>
+                            <span class="timestamp">${timestamp}</span>
+                        </div>
+                        <img src="{% static 'img/user-avatar.png' %}" alt="User Avatar" class="avatar">
+                    </div>
+                `);
+                
+                $('#message-textbox').val('');
+        
+                const loadingMessage = `
+                    <div class="message-container bot loading">
+                        <img src="{% static 'img/bot-avatar.png' %}" alt="Bot Avatar" class="avatar">
+                        <div class="message-bubble">
+                            <img src="{% static 'img/loading.gif' %}" alt="Loading..." class="loading-gif"/>
+                            <span class="timestamp">${timestamp}</span>
+                        </div>
+                    </div>
+                `;
+                $('#chat-response').append(loadingMessage);
+                $('#chat-response').animate({ scrollTop: $('#chat-response')[0].scrollHeight }, 500);
+        
+                $.ajax({
+                    type: 'POST',
+                    url: '/chat/',
+                    contentType: 'application/json',
+                    data: JSON.stringify({ message: message }),
+                    beforeSend: function(xhr){
+                        xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+                    },
+                    success: function(response){
+                        $('#chat-response .loading').last().remove();
+                        
+                        $('#chat-response').append(`
+                            <div class="message-container bot">
+                                <img src="{% static 'img/bot-avatar.png' %}" alt="Bot Avatar" class="avatar">
+                                <div class="message-bubble">
+                                    <p>${response.response}</p>
+                                    <span class="timestamp">${timestamp}</span>
+                                </div>
+                            </div>
+                        `);
+                        $('#chat-response').animate({ scrollTop: $('#chat-response')[0].scrollHeight }, 500);
+                    },
+                    error: function(xhr, status, error){
+                        console.error('Error: ', error);
+                        $('#chat-response .loading').last().remove();
+                        $('#chat-response').append(`
+                            <div class="message-container bot error">
+                                <div class="message-bubble">
+                                    <p>Sorry, there was an error processing your message. Please try again later.</p>
+                                </div>
+                            </div>
+                        `);
+                        $('#chat-response').animate({ scrollTop: $('#chat-response')[0].scrollHeight }, 500);
+                    }
+                });
+            }
+        
+            function getCookie(name) {
+                let cookieValue = null;
+                if (document.cookie && document.cookie !== '') {
+                    const cookies = document.cookie.split(';');
+                    for (let i = 0; i < cookies.length; i++) {
+                        const cookie = cookies[i].trim();
+                        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                            break;
+                        }
+                    }
+                }
+                return cookieValue;
+            }
+        });
+        </script>
+        
 </body>

@@ -4,7 +4,7 @@ from django.http import JsonResponse
 from azure.ai.inference import ChatCompletionsClient
 from azure.core.credentials import AzureKeyCredential
 
-def chat_view(request):
+def Chat(request):
     if request.method == 'POST':
         user_message = json.loads(request.body).get('message')
 
