@@ -118,7 +118,7 @@ html, body {
     height: 85%; /* Set height relative to parent */
     width: 98%; /* Set width relative to parent */
     border-radius: 35px;
-    background-image: url('../img/bg.png');
+    background-image: url("../img/bg.5ca052f44e55.png");
     background-size: cover;
     background-position: center;
     display: flex;
@@ -135,7 +135,7 @@ html, body {
     height: 85%; /* Set height relative to parent */
     width: 98%; /* Set width relative to parent */
     border-radius: 35px;
-    background-image: url('../img/bg.png');
+    background-image: url("../img/bg.5ca052f44e55.png");
     background-size: cover;
     background-position: center;
     display: flex;

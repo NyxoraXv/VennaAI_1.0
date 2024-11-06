@@ -8,6 +8,7 @@ def get_azure_key():
 
 def Chat(conversation_history):
     # Retrieve the API key and endpoint from the environment or secure store
+    print("its here")
     api_key = get_azure_key()
     endpoint = os.getenv("AZURE_ENDPOINT", "https://Meta-Llama-3-1-405B-venna.eastus2.models.ai.azure.com")  # Ensure the endpoint is also in environment variables
 
