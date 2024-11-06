@@ -11,6 +11,10 @@
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 <body>
+    <div id="loading-overlay">
+        <div class="spinner"></div>
+    </div>
+    
     <!-- Main Container -->
     <div class="header-container">
         <header class="header">
@@ -34,7 +38,7 @@
                 <div class="message-container bot">
                     <img src="{% static 'img/bot-avatar.png' %}" alt="Bot Avatar" class="avatar">
                     <div class="message-bubble">
-                        <p>Hai! Aku Venna, Aku bisa bantu kamu apa aja, apalagi curhat!</p>
+                        <p>Hloo, namamu siapa?</p>
                         <span class="timestamp"></span>
                     </div>
                 </div>
@@ -48,6 +52,42 @@
     </div>
     
     <script>
+document.addEventListener("DOMContentLoaded", function() {
+    const images = document.querySelectorAll("img");
+    let imagesLoaded = 0;
+
+    images.forEach((img) => {
+        if (img.complete) {
+            imagesLoaded++;
+        } else {
+            img.addEventListener("load", () => {
+                imagesLoaded++;
+                if (imagesLoaded === images.length) {
+                    hideLoadingOverlay();
+                }
+            });
+            img.addEventListener("error", () => {
+                imagesLoaded++; // Increment even if there was an error
+                if (imagesLoaded === images.length) {
+                    hideLoadingOverlay();
+                }
+            });
+        }
+    });
+
+    if (imagesLoaded === images.length) {
+        hideLoadingOverlay();
+    }
+});
+
+function hideLoadingOverlay() {
+    const overlay = document.getElementById("loading-overlay");
+    if (overlay) {
+        overlay.style.display = "none";
+    }
+}
+
+
 $(document).ready(function(){
     $('.send-button').on('click', sendMessage);
 
