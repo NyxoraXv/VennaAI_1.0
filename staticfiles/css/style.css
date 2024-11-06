@@ -141,6 +141,7 @@ html, body {
     display: flex;
     flex-direction: column;
     padding: 10px; /* Padding for internal content */
+    padding-bottom: 60px;
     opacity: 0; /* Start hidden for fade-in effect */
     animation: fadeIn 0.7s forwards; /* Fade in on load */
     animation-delay: 0.2s; /* Delay to allow mask to fade in first */
@@ -226,7 +227,7 @@ html, body {
 .message-container {
     display: flex;
     align-items: flex-end;
-    margin-bottom: 70px;
+    margin-bottom: 40px;
     opacity: 0; /* Start hidden for fade-in effect */
     animation: fadeInMessage 0.5s forwards; /* Fade in animation for messages */
 }
@@ -355,4 +356,23 @@ html, body {
         margin: 30px 20px 15px 20px;
     }
 
+    .bot .message-bubble {
+        background-color: rgba(255, 255, 255, 0.7);
+        border-bottom-left-radius: 0;
+        margin-left: 5px;
+    }
+    
+    .user .message-bubble {
+        background-color: #8cf99083;
+        border-bottom-right-radius: 0;
+        margin-right: 5px;
+    }
+    .message-container {
+        display: flex;
+        align-items: flex-end;
+        margin-bottom: 20px;
+        opacity: 0; /* Start hidden for fade-in effect */
+        animation: fadeInMessage 0.5s forwards; /* Fade in animation for messages */
+    }
+    
 }

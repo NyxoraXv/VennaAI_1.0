@@ -118,7 +118,7 @@ html, body {
     height: 85%; /* Set height relative to parent */
     width: 98%; /* Set width relative to parent */
     border-radius: 35px;
-    background-image: url('../img/bg.png');
+    background-image: url("../img/bg.5ca052f44e55.png");
     background-size: cover;
     background-position: center;
     display: flex;
@@ -135,13 +135,12 @@ html, body {
     height: 85%; /* Set height relative to parent */
     width: 98%; /* Set width relative to parent */
     border-radius: 35px;
-    background-image: url('../img/bg.png');
+    background-image: url("../img/bg.5ca052f44e55.png");
     background-size: cover;
     background-position: center;
     display: flex;
     flex-direction: column;
     padding: 10px; /* Padding for internal content */
-    padding-bottom: 60px;
     opacity: 0; /* Start hidden for fade-in effect */
     animation: fadeIn 0.7s forwards; /* Fade in on load */
     animation-delay: 0.2s; /* Delay to allow mask to fade in first */
@@ -228,6 +227,7 @@ html, body {
     display: flex;
     align-items: flex-end;
     margin-bottom: 40px;
+    padding-bottom: 20px;
     opacity: 0; /* Start hidden for fade-in effect */
     animation: fadeInMessage 0.5s forwards; /* Fade in animation for messages */
 }
