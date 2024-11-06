@@ -56,6 +56,9 @@ def Chat(user_input):
     })
 
     if(assistant_message == "generate"):
-        generate
+        return generateImage(user_input)
+        
 
     return assistant_message
+
+def generateImage():
